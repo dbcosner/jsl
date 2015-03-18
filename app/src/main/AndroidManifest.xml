@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.osu.expandablelistviewtest1" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="JSL Book 2 (ver. 0.1)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.CoreConversationsActivity"
+            android:label="JSL Book 2: Core Conversations (ver. 0.1)" >
+        </activity>
+        <activity
+            android:name=".activities.DrillsActivity"
+            android:label="JSL Book 2: Core Conversations (ver. 0.1)" >
+        </activity>
+    </application>
+
+</manifest>
