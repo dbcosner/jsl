@@ -48,13 +48,13 @@ public class TOCExpandableListAdapter extends BaseExpandableListAdapter {
         // Children correspond to chapter sections
         final String chapterSection = (String) getChild(groupPosition, childPosition);
 
-        // Groups correspond to chapters
-        final int chapter = groupPosition;
+        // Groups DON'T correspond to chapters
+        final int chapter = groups.get(groupPosition).chapter;
 
         TextView text = null;
         if (convertView == null) {
             // Get the XML for the child Views (CCs and Drills)
-            convertView = inflater.inflate(R.layout.toc_listrow_details, null);
+            convertView = inflater.inflate(R.layout.list_children_toc, null);
         }
 
         // convertView is a View, so we can use its findViewById method
@@ -117,10 +117,10 @@ public class TOCExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.toc_listrow_group, null);
+            convertView = inflater.inflate(R.layout.list_group_toc, null);
         }
         Group group = (Group) getGroup(groupPosition);
-        ((CheckedTextView) convertView).setText(group.string);
+        ((CheckedTextView) convertView).setText(group.chapterAsString);
         ((CheckedTextView) convertView).setChecked(isExpanded);
 
         // Personal addition for test

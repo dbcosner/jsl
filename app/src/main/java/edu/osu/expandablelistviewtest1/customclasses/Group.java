@@ -7,11 +7,13 @@ import java.util.List;
 
 public class Group {
 
-    public String string;
+    public String chapterAsString;
+    public int chapter;
     public final List<String> children = new ArrayList<String>();
 
-    public Group(String string) {
-        this.string = string;
+    public Group(int chapter) {
+       this.chapter = chapter;
+        this.chapterAsString = "Chapter " + chapter;
     }
 
 }

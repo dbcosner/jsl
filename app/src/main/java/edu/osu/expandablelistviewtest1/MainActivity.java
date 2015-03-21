@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
         // Create chapter headings
         int counter = 0; // group numbers can't correspond to chapters, unfortunately
         for (int i = FIRST_CHAPTER; i<=LAST_CHAPTER; i++) {
-            Group group = new Group("Chapter " + i);
+            Group group = new Group(i);
             group.children.add("Core Conversations");
             group.children.add("Drills");
             groups.append(counter, group);

@@ -3,6 +3,7 @@ package edu.osu.expandablelistviewtest1.activities;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,7 +14,12 @@ import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -25,9 +31,11 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import edu.osu.expandablelistviewtest1.R;
-import edu.osu.expandablelistviewtest1.fragments.CoreConversationsFragment;
+import edu.osu.expandablelistviewtest1.customclasses.CoreConversation;
+import edu.osu.expandablelistviewtest1.customclasses.CoreConversationInterface;
 
 public class CoreConversationsActivity extends Activity {
     private int chapter;
@@ -51,43 +59,65 @@ public class CoreConversationsActivity extends Activity {
         ImageView testImage = (ImageView) findViewById(R.id.testImage);
         ImageDownloader imageDownloader = new ImageDownloader();
 
-        String imageURL = "http://www.cbusdesigns.com/jsl-app/chapter13/coreconversation/images/01.jpg";
+        //String imageURL = "http://www.cbusdesigns.com/jsl-app/chapter13/coreconversation/images/01.jpg";
+        CoreConversationInterface coreConversationInterface = new CoreConversationInterface();
+        ArrayList<CoreConversation> thisChapter = coreConversationInterface.getCoreConversation(chapter);
+        String imageURL = thisChapter.get(0).getImageURL();
+
+
         imageDownloader.download(imageURL, testImage);
 
-        /*
-
-        // The chapter will need to be passed along once more to
-        // the Fragment
-        Bundle bundle = new Bundle();
-        bundle.putInt("chapter", chapter);
-        CoreConversationsFragment coreConversationsFragment = new CoreConversationsFragment();
-        coreConversationsFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.layout.activity_core_conversations, coreConversationsFragment);
-        fragmentTransaction.commit();
-
-        */
+        // Try ArrayAdapter stuff
+        ArrayAdapter<CoreConversation> coreConversationAdapter = new CoreConversationAdapter(
+                this, R.layout.list_children_core_conversations, thisChapter);
+        ListView listView = (ListView) findViewById(R.id.coreConversationListParent);
+        listView.setAdapter(coreConversationAdapter);
     }
 
-    /*
-    // http://stackoverflow.com/questions/8992964/android-load-from-url-to-bitmap
-    public static Bitmap getBitmapFromURL(String source) {
-        try {
-            URL url = new URL(source);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (Exception e) {
-            Log.d(TAG, " -- " + e);
-            return null;
+
+
+
+    // Adapter class for adapting CoreConversation objects
+    private class CoreConversationAdapter extends ArrayAdapter<CoreConversation> {
+        private ArrayList<CoreConversation> coreConversations;
+
+        public CoreConversationAdapter(Context context, int childViewLayout, ArrayList<CoreConversation> coreConversations) {
+            super(context, childViewLayout, coreConversations);
+            this.coreConversations = coreConversations;
+        }
+
+        @Override
+        public View getView(int position, View childView, ViewGroup parent) {
+            // convertView =
+            View v = childView;
+            if (v == null) {
+                LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = layoutInflater.inflate(R.layout.list_children_core_conversations, null);
+            }
+            CoreConversation coreConversation = coreConversations.get(position);
+            if (coreConversation != null) {
+                TextView textView = (TextView) v.findViewById(R.id.listChildrenTestText);
+                ImageView imageView = (ImageView) v.findViewById(R.id.listChildrenTestImage);
+                if (textView != null) {
+                    textView.setText(coreConversation.getDescription());
+                }
+                if (imageView != null) {
+                    ImageDownloader imageDownloader = new ImageDownloader();
+                    imageDownloader.download(coreConversation.getImageURL(), imageView);
+                }
+            }
+            return v;
         }
     }
-    */
+
+
+
+
+
+
+
+
+
 
     // http://android-developers.blogspot.com/2010/07/multithreading-for-performance.html
     public class ImageDownloader {
