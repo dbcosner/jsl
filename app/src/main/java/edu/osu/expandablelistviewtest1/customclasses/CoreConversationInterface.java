@@ -15,7 +15,6 @@ public class CoreConversationInterface {
     private static String audioURL = "audioURL not specified";
     private static CoreConversation chapter13CoreConversation = new CoreConversation(description, imageURL, audioURL);
 
-
     public CoreConversationInterface() {
         // initialize all CC info
         chapter13CoreConversations.add(chapter13CoreConversation);

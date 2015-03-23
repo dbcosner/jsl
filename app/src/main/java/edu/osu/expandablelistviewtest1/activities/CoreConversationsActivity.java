@@ -38,8 +38,9 @@ import edu.osu.expandablelistviewtest1.customclasses.CoreConversation;
 import edu.osu.expandablelistviewtest1.customclasses.CoreConversationInterface;
 
 public class CoreConversationsActivity extends Activity {
+    // http://streaming.osu.edu/audio/jpn09su03/07/7a1.mp3
     private int chapter;
-    private static String TAG = "CoreConversationsActivity.java";
+    private static String TAG = "#### CoreConversationsActivity.java";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,8 @@ public class CoreConversationsActivity extends Activity {
         // The "1" at the end is the default (chapter in this case)
         chapter = intent.getIntExtra("chapter", 1);
 
-        // Remove later:
+        /* For testing purposes:
+
         TextView testText = (TextView) findViewById(R.id.testText);
         testText.setText("Chapter should be here: " + chapter);
 
@@ -66,8 +68,12 @@ public class CoreConversationsActivity extends Activity {
 
 
         imageDownloader.download(imageURL, testImage);
+        */
 
-        // Try ArrayAdapter stuff
+        // Get CCs and populate list
+        CoreConversationInterface coreConversationInterface = new CoreConversationInterface();
+        ArrayList<CoreConversation> thisChapter = coreConversationInterface.getCoreConversation(chapter);
+
         ArrayAdapter<CoreConversation> coreConversationAdapter = new CoreConversationAdapter(
                 this, R.layout.list_children_core_conversations, thisChapter);
         ListView listView = (ListView) findViewById(R.id.coreConversationListParent);
@@ -80,16 +86,21 @@ public class CoreConversationsActivity extends Activity {
     // Adapter class for adapting CoreConversation objects
     private class CoreConversationAdapter extends ArrayAdapter<CoreConversation> {
         private ArrayList<CoreConversation> coreConversations;
+        // Needed in onClick listener:
+        private final Context context;
 
         public CoreConversationAdapter(Context context, int childViewLayout, ArrayList<CoreConversation> coreConversations) {
             super(context, childViewLayout, coreConversations);
             this.coreConversations = coreConversations;
+            this.context = context;
         }
 
         @Override
         public View getView(int position, View childView, ViewGroup parent) {
-            // convertView =
             View v = childView;
+            // Audio files correspond w/ CC numbers and are not zero-indexed
+            // like position is
+            final int adjustedPosition = position + 1;
             if (v == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = layoutInflater.inflate(R.layout.list_children_core_conversations, null);
@@ -106,6 +117,23 @@ public class CoreConversationsActivity extends Activity {
                     imageDownloader.download(coreConversation.getImageURL(), imageView);
                 }
             }
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    intent = new Intent(context, StreamAudioActivity.class);
+
+                    String audioSource = "http://www.cbusdesigns.com/jsl-app/";
+                    audioSource += "chapter" + chapter;
+                    audioSource += "/coreconversation/audio/";
+                    audioSource += "core_conversation_" + adjustedPosition + ".mp3";
+                    Log.d(TAG, "Audio URL: " + audioSource);
+                    intent.putExtra("audioURL", audioSource);
+
+                    // startActivity belongs to Context
+                    context.startActivity(intent);
+                }
+            });
             return v;
         }
     }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.osu.expandablelistviewtest1" >
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +25,11 @@
         </activity>
         <activity
             android:name=".activities.DrillsActivity"
-            android:label="JSL Book 2: Core Conversations (ver. 0.1)" >
+            android:label="JSL Book 2: Drills (ver. 0.1)" >
+        </activity>
+        <activity
+            android:name=".activities.StreamAudioActivity"
+            android:label="JSL Book 2: Streaming Audio (ver. 0.1)" >
         </activity>
     </application>
 
