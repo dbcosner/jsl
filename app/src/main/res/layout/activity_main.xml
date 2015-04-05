@@ -10,7 +10,7 @@
     tools:context=".MainActivity" >
 
     <ExpandableListView
-        android:id="@+id/listView"
+        android:id="@+id/activityMainListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">

@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
         createData();
 
         // Create a ListView using the ListView "listView" in activity_main.xml
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
+        ExpandableListView listView = (ExpandableListView) findViewById(R.id.activityMainListView);
         TOCExpandableListAdapter adapter = new TOCExpandableListAdapter(this,
                 groups);
 
@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         }
     }*/
 
+    // Used to create the chapter headings which are clicked to expand
     public void createData() {
         final int FIRST_CHAPTER = 13;
         final int LAST_CHAPTER = 24;
