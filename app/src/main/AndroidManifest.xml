@@ -31,6 +31,10 @@
             android:name=".activities.StreamAudioActivity"
             android:label="JSL Book 2: Streaming Audio (ver. 0.1)" >
         </activity>
+        <activity
+            android:name=".activities.StreamVideoActivity"
+            android:label="JSL Book 2: Streaming Video (ver. 0.1)" >
+        </activity>
     </application>
 
 </manifest>

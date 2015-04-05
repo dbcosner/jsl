@@ -100,12 +100,15 @@ public class CoreConversationsActivity extends Activity {
             View v = childView;
             // Audio files correspond w/ CC numbers and are not zero-indexed
             // like position is
-            final int adjustedPosition = position + 1;
+
             if (v == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = layoutInflater.inflate(R.layout.list_children_core_conversations, null);
             }
-            CoreConversation coreConversation = coreConversations.get(position);
+
+            // made "final" to use in onClickListener
+            final CoreConversation coreConversation = coreConversations.get(position);
+
             if (coreConversation != null) {
                 TextView textView = (TextView) v.findViewById(R.id.listChildrenTestText);
                 ImageView imageView = (ImageView) v.findViewById(R.id.listChildrenTestImage);
@@ -121,14 +124,15 @@ public class CoreConversationsActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent intent;
-                    intent = new Intent(context, StreamAudioActivity.class);
+                    intent = new Intent(context, StreamVideoActivity.class);
 
-                    String audioSource = "http://www.cbusdesigns.com/jsl-app/";
-                    audioSource += "chapter" + chapter;
-                    audioSource += "/coreconversation/audio/";
-                    audioSource += "core_conversation_" + adjustedPosition + ".mp3";
-                    Log.d(TAG, "Audio URL: " + audioSource);
-                    intent.putExtra("audioURL", audioSource);
+                    String videoSource = coreConversation.getVideoURL();
+
+                    Log.d(TAG, "Video URL: " + videoSource);
+                    intent.putExtra("videoURL", videoSource);
+
+                    //TODO: implement the following
+                    intent.putExtra("trackTitle", "Video Track Title");
 
                     // startActivity belongs to Context
                     context.startActivity(intent);

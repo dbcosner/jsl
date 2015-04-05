@@ -197,9 +197,7 @@ public class StreamAudioActivity extends Activity {
         }
     }
 
-    // Private methods
-
-
+    // onCreate, etc.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

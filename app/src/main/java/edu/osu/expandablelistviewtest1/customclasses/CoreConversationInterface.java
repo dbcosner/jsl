@@ -12,8 +12,8 @@ public class CoreConversationInterface {
     private static ArrayList<CoreConversation> chapter13CoreConversations = new ArrayList<CoreConversation>();
     private static String description = "Mr. Tanaka on the phone";
     private static String imageURL = "http://www.cbusdesigns.com/jsl-app/chapter13/coreconversation/images/01.jpg";
-    private static String audioURL = "audioURL not specified";
-    private static CoreConversation chapter13CoreConversation = new CoreConversation(description, imageURL, audioURL);
+    private static String videoURL = "http://www.cbusdesigns.com/jsl-app/chapter13/coreconversation/video/A-01.mp4";
+    private static CoreConversation chapter13CoreConversation = new CoreConversation(description, imageURL, videoURL);
 
     public CoreConversationInterface() {
         // initialize all CC info
