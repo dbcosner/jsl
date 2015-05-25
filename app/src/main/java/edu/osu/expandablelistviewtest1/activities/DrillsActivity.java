@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,6 +34,7 @@ import edu.osu.expandablelistviewtest1.R;
 import edu.osu.expandablelistviewtest1.customclasses.CoreConversation;
 import edu.osu.expandablelistviewtest1.customclasses.CoreConversationInterface;
 import edu.osu.expandablelistviewtest1.customclasses.DrillsInterface;
+import edu.osu.expandablelistviewtest1.customclasses.WifiConnectionChecker;
 
 public class DrillsActivity extends Activity {
     // http://streaming.osu.edu/audio/jpn09su03/07/7a1.mp3
@@ -42,25 +44,28 @@ public class DrillsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (WifiConnectionChecker.connectedToWifi(this)) {
+            setContentView(R.layout.activity_drills);
 
-        setContentView(R.layout.activity_drills);
+            Intent intent = getIntent();
+            // The chapter, as passed from the TOC
+            // The "1" at the end is the default (chapter in this case)
+            chapter = intent.getIntExtra("chapter", 1);
 
-        Intent intent = getIntent();
-        // The chapter, as passed from the TOC
-        // The "1" at the end is the default (chapter in this case)
-        chapter = intent.getIntExtra("chapter", 1);
+            // Set the heading text
+            TextView drillsHeading = (TextView) findViewById(R.id.drillsHeading);
+            drillsHeading.setText("JSL Chapter " + chapter + ": Drills");
 
-        // Set the heading text
-        TextView drillsHeading = (TextView) findViewById(R.id.drillsHeading);
-        drillsHeading.setText("JSL Chapter " + chapter + ": Drills");
-
-        DrillsInterface drillsInterface = new DrillsInterface();
-        ArrayList<String> thisChapter =
-                drillsInterface.getChapter(chapter);
-        ArrayAdapter<String> myArrayAdapter = new MyArrayAdapter(
-                this, R.layout.list_children_drills, thisChapter);
-        ListView listView = (ListView) findViewById(R.id.drillsListParent);
-        listView.setAdapter(myArrayAdapter);
+            DrillsInterface drillsInterface = new DrillsInterface();
+            ArrayList<String> thisChapter =
+                    drillsInterface.getChapter(chapter);
+            ArrayAdapter<String> myArrayAdapter = new MyArrayAdapter(
+                    this, R.layout.list_children_drills, thisChapter);
+            ListView listView = (ListView) findViewById(R.id.drillsListParent);
+            listView.setAdapter(myArrayAdapter);
+        } else {
+            Toast.makeText(this, getString(R.string.no_wifi), Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -95,26 +100,32 @@ public class DrillsActivity extends Activity {
                     textView.setText(drill);
                 }
             }
+
+            final ViewGroup finalParent = parent;
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent;
-                    intent = new Intent(context, StreamAudioActivity.class);
+                    if (WifiConnectionChecker.connectedToWifi(finalParent.getContext())) {
+                        Intent intent;
+                        intent = new Intent(context, StreamAudioActivity.class);
 
-                    String audioSource = "http://www.cbusdesigns.com/jsl-app/";
-                    audioSource += "chapter" + chapter;
-                    audioSource += "/drills/audio/";
-                    // TODO: Need to change the whole capital "A" in the title thing
-                    audioSource += "13A_" + adjustedPosition + ".mp3";
-                    Log.d(TAG, "Audio URL: " + audioSource);
-                    intent.putExtra("audioURL", audioSource);
+                        String audioSource = "http://www.cbusdesigns.com/jsl-app/";
+                        audioSource += "chapter" + chapter;
+                        audioSource += "/drills/audio/";
+                        // TODO: Need to change the whole capital "A" in the title thing
+                        audioSource += chapter + "A_" + adjustedPosition + ".mp3";
+                        Log.d(TAG, "Audio URL: " + audioSource);
+                        intent.putExtra("audioURL", audioSource);
 
-                    // A little bit of spaghetti code to tide the appetite
-                    int actualPosition = adjustedPosition - 1;
-                    intent.putExtra("trackTitle", drills.get(actualPosition));
+                        // A little bit of spaghetti code to tide the appetite
+                        int actualPosition = adjustedPosition - 1;
+                        intent.putExtra("trackTitle", drills.get(actualPosition));
 
-                    // startActivity belongs to Context
-                    context.startActivity(intent);
+                        // startActivity belongs to Context
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(finalParent.getContext(), finalParent.getContext().getString(R.string.no_wifi), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
             return v;

@@ -7,11 +7,11 @@
     android:background="@color/JSL2_purple"
 
     android:gravity="center_vertical"
-    android:padding="15dp"
+    android:padding="10dp"
 
     android:checkMark="@drawable/ic_action_expand"
 
     android:text="Test"
-    android:textSize="15dp"
+    android:textSize="25dp"
     android:textColor="@color/light_text"
     android:textStyle="bold"/>

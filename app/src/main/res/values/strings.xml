@@ -4,6 +4,7 @@
     <string name="app_name">ExpandableListViewTest1</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="no_wifi">This device is not currently connected to a wifi network. This application requires connection to a wifi network.</string>
 
     <!-- For Core Conversations ListAdapter stuff -->
     <string name="icon_content_description">Empty description</string>

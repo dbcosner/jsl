@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // Custom activities
 import edu.osu.expandablelistviewtest1.R;
 import edu.osu.expandablelistviewtest1.activities.CoreConversationsActivity;
 import edu.osu.expandablelistviewtest1.activities.DrillsActivity;
 import edu.osu.expandablelistviewtest1.customclasses.Group;
+import edu.osu.expandablelistviewtest1.customclasses.WifiConnectionChecker;
 
 public class TOCExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -60,23 +62,30 @@ public class TOCExpandableListAdapter extends BaseExpandableListAdapter {
         // convertView is a View, so we can use its findViewById method
         text = (TextView) convertView.findViewById(R.id.textView1);
         text.setText(chapterSection);
+
+        final ViewGroup finalParent = parent;
         convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(activity, children,
-                //        Toast.LENGTH_SHORT).show();
-                Intent intent;
+                if(WifiConnectionChecker.connectedToWifi(finalParent.getContext())) {
 
-                // Don't forget the .class when calling custom activities through Intent
-                if (chapterSection.equals("Core Conversations")) {
-                    intent = new Intent(activity, CoreConversationsActivity.class);
-                }  else {
-                    intent = new Intent(activity, DrillsActivity.class);
+                    //Toast.makeText(activity, children,
+                    //        Toast.LENGTH_SHORT).show();
+                    Intent intent;
+
+                    // Don't forget the .class when calling custom activities through Intent
+                    if (chapterSection.equals("Core Conversations")) {
+                        intent = new Intent(activity, CoreConversationsActivity.class);
+                    }  else {
+                        intent = new Intent(activity, DrillsActivity.class);
+                    }
+                    intent.putExtra("chapter", chapter);
+
+                    // startActivity belongs to Context
+                    activity.startActivity(intent);
+                } else {
+                    Toast.makeText(finalParent.getContext(), finalParent.getContext().getString(R.string.no_wifi), Toast.LENGTH_LONG).show();
                 }
-                intent.putExtra("chapter", chapter);
-
-                // startActivity belongs to Context
-                activity.startActivity(intent);
             }
         });
         return convertView;

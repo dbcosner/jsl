@@ -216,12 +216,12 @@ public class StreamAudioActivity extends Activity {
         mStatusText = (TextView) findViewById(R.id.activityMainStatusText);
         mPlayButton = (Button) findViewById(R.id.activityMainPlayButton);
         mPauseButton = (Button) findViewById(R.id.activityMainPauseButton);
-        mStopButton = (Button) findViewById(R.id.activityMainStopButton);
+        //mStopButton = (Button) findViewById(R.id.activityMainStopButton);
 
         // Set event listeners
         mPlayButton.setOnClickListener(playButtonListener);
         mPauseButton.setOnClickListener(pauseButtonListener);
-        mStopButton.setOnClickListener(stopButtonListener);
+        //mStopButton.setOnClickListener(stopButtonListener);
 
         // Do other fun stuff
         mProgressBar.setVisibility(View.INVISIBLE);

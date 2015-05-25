@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import edu.osu.expandablelistviewtest1.R;
 import edu.osu.expandablelistviewtest1.customclasses.CoreConversation;
 import edu.osu.expandablelistviewtest1.customclasses.CoreConversationInterface;
+import edu.osu.expandablelistviewtest1.customclasses.WifiConnectionChecker;
 
 public class CoreConversationsActivity extends Activity {
     // http://streaming.osu.edu/audio/jpn09su03/07/7a1.mp3
@@ -45,13 +47,17 @@ public class CoreConversationsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (WifiConnectionChecker.connectedToWifi(this)) {
+            setContentView(R.layout.activity_core_conversations);
+            TextView coreConversationHeader = (TextView) findViewById(R.id.coreConversationHeader);
 
-        setContentView(R.layout.activity_core_conversations);
+            Intent intent = getIntent();
+            // The chapter, as passed from the TOC
+            // The "1" at the end is the default (chapter in this case)
+            chapter = intent.getIntExtra("chapter", 1);
 
-        Intent intent = getIntent();
-        // The chapter, as passed from the TOC
-        // The "1" at the end is the default (chapter in this case)
-        chapter = intent.getIntExtra("chapter", 1);
+            // Set the header now that we have the chapter:
+            coreConversationHeader.setText("JSL Chapter " + chapter + ": Core Conversations");
 
         /* For testing purposes:
 
@@ -70,18 +76,18 @@ public class CoreConversationsActivity extends Activity {
         imageDownloader.download(imageURL, testImage);
         */
 
-        // Get CCs and populate list
-        CoreConversationInterface coreConversationInterface = new CoreConversationInterface();
-        ArrayList<CoreConversation> thisChapter = coreConversationInterface.getCoreConversation(chapter);
+            // Get CCs and populate list
+            CoreConversationInterface coreConversationInterface = new CoreConversationInterface();
+            ArrayList<CoreConversation> thisChapter = coreConversationInterface.getCoreConversation(chapter);
 
-        ArrayAdapter<CoreConversation> coreConversationAdapter = new CoreConversationAdapter(
-                this, R.layout.list_children_core_conversations, thisChapter);
-        ListView listView = (ListView) findViewById(R.id.coreConversationListParent);
-        listView.setAdapter(coreConversationAdapter);
+            ArrayAdapter<CoreConversation> coreConversationAdapter = new CoreConversationAdapter(
+                    this, R.layout.list_children_core_conversations, thisChapter);
+            ListView listView = (ListView) findViewById(R.id.coreConversationListParent);
+            listView.setAdapter(coreConversationAdapter);
+        } else {
+            Toast.makeText(this, getString(R.string.no_wifi), Toast.LENGTH_LONG).show();
+        }
     }
-
-
-
 
     // Adapter class for adapting CoreConversation objects
     private class CoreConversationAdapter extends ArrayAdapter<CoreConversation> {
@@ -110,46 +116,47 @@ public class CoreConversationsActivity extends Activity {
             final CoreConversation coreConversation = coreConversations.get(position);
 
             if (coreConversation != null) {
-                TextView textView = (TextView) v.findViewById(R.id.listChildrenTestText);
-                ImageView imageView = (ImageView) v.findViewById(R.id.listChildrenTestImage);
-                if (textView != null) {
-                    textView.setText(coreConversation.getDescription());
+                TextView coreConversationChildrenHeader = (TextView) v.findViewById(R.id.coreConversationChildrenHeader);
+                ImageView coreConversationChildrenImage = (ImageView) v.findViewById(R.id.coreConversationChildrenImage);
+                TextView coreConversationChildrenDescription = (TextView) v.findViewById(R.id.coreConversationChildrenDescription);
+                if (coreConversationChildrenHeader != null) {
+                    coreConversationChildrenHeader.setText(coreConversation.getTitle());
                 }
-                if (imageView != null) {
+                if (coreConversationChildrenImage != null) {
                     ImageDownloader imageDownloader = new ImageDownloader();
-                    imageDownloader.download(coreConversation.getImageURL(), imageView);
+                    imageDownloader.download(coreConversation.getImageURL(), coreConversationChildrenImage);
+                }
+                if (coreConversationChildrenDescription != null) {
+                    coreConversationChildrenDescription.setText(coreConversation.getDescription());
                 }
             }
+
+            final ViewGroup finalParent = parent;
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent;
-                    intent = new Intent(context, StreamVideoActivity.class);
+                    if (WifiConnectionChecker.connectedToWifi(finalParent.getContext())) {
+                        Intent intent;
+                        intent = new Intent(context, StreamVideoActivity.class);
 
-                    String videoSource = coreConversation.getVideoURL();
+                        String videoSource = coreConversation.getVideoURL();
 
-                    Log.d(TAG, "Video URL: " + videoSource);
-                    intent.putExtra("videoURL", videoSource);
+                        Log.d(TAG, "Video URL: " + videoSource);
+                        intent.putExtra("videoURL", videoSource);
 
-                    //TODO: implement the following
-                    intent.putExtra("trackTitle", "Video Track Title");
+                        //TODO: implement the following
+                        intent.putExtra("trackTitle", "Video Track Title");
 
-                    // startActivity belongs to Context
-                    context.startActivity(intent);
+                        // startActivity belongs to Context
+                        context.startActivity(intent);
+                    } else {
+                       Toast.makeText(finalParent.getContext(), finalParent.getContext().getString(R.string.no_wifi), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
             return v;
         }
     }
-
-
-
-
-
-
-
-
-
 
     // http://android-developers.blogspot.com/2010/07/multithreading-for-performance.html
     public class ImageDownloader {

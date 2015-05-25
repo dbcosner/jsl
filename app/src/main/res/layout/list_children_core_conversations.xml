@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="6dp"
+    >
 
     <TextView
-        android:id="@+id/listChildrenTestText"
+        android:id="@+id/coreConversationChildrenHeader"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="25dp"/>
 
-    <ImageView
-        android:id="@+id/listChildrenTestImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="6dp">
+
+        <ImageView
+            android:id="@+id/coreConversationChildrenImage"
+            android:layout_width="230px"
+            android:layout_height="170px" />
+
+        <TextView
+            android:id="@+id/coreConversationChildrenDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/coreConversationChildrenImage"
+            android:paddingLeft="6dp"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
