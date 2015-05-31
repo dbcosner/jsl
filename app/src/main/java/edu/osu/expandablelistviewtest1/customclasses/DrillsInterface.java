@@ -4,65 +4,78 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DrillsInterface {
-    private static HashMap<Integer, ArrayList<String>> drills =
+    private static HashMap<Integer, ArrayList<String>> sectionADrills =
             new HashMap<Integer, ArrayList<String>>();
+
+    private static HashMap<Integer, ArrayList<String>> sectionBDrills =
+            new HashMap<Integer, ArrayList<String>>();
+
+    private char lastDrill;
 
     public DrillsInterface() {
         // chapter 13
-        ArrayList<String> chapter13Drills = new ArrayList<String>();
-        chapter13Drills.add("Section A Drill A");
-        chapter13Drills.add("Section A Drill B");
-        chapter13Drills.add("Section A Drill C");
-        chapter13Drills.add("Section A Drill D");
-        chapter13Drills.add("Section A Drill E");
-        chapter13Drills.add("Section A Drill F");
-        chapter13Drills.add("Section A Drill G");
-        chapter13Drills.add("Section A Drill H");
-        chapter13Drills.add("Section A Drill I");
-        chapter13Drills.add("Section A Drill J");
-        chapter13Drills.add("Section A Drill K");
-        chapter13Drills.add("Section A Drill L");
-        chapter13Drills.add("Section A Drill M");
-        chapter13Drills.add("Section A Drill N");
-        chapter13Drills.add("Section A Drill O");
-        chapter13Drills.add("Section A Drill P");
-        chapter13Drills.add("Section A Drill Q");
-        chapter13Drills.add("Section A Drill R");
-        chapter13Drills.add("Section A Drill S");
-
-        drills.put(13, chapter13Drills);
+        sectionADrills.put(13, populateSection('A', 'V'));
+        sectionBDrills.put(13, populateSection('B', 'P'));
 
         // chapter 14
-        ArrayList<String> chapter14Drills = new ArrayList<String>();
-        chapter14Drills.add("Section A Drill A");
-        chapter14Drills.add("Section A Drill B");
-        chapter14Drills.add("Section A Drill C");
-        chapter14Drills.add("Section A Drill D");
-        chapter14Drills.add("Section A Drill E");
-        chapter14Drills.add("Section A Drill F");
-        chapter14Drills.add("Section A Drill G");
-        chapter14Drills.add("Section A Drill H");
-        chapter14Drills.add("Section A Drill I");
-        chapter14Drills.add("Section A Drill J");
-        chapter14Drills.add("Section A Drill K");
-        chapter14Drills.add("Section A Drill L");
-        chapter14Drills.add("Section A Drill M");
-        chapter14Drills.add("Section A Drill N");
-        chapter14Drills.add("Section A Drill O");
-        chapter14Drills.add("Section A Drill P");
-        chapter14Drills.add("Section A Drill Q");
-        chapter14Drills.add("Section A Drill R");
-        chapter14Drills.add("Section A Drill S");
-        chapter14Drills.add("Section A Drill T");
-        chapter14Drills.add("Section A Drill U");
-        chapter14Drills.add("Section A Drill V");
+        sectionADrills.put(14, populateSection('A', 'S'));
+        sectionBDrills.put(14, populateSection('B', 'M'));
 
-        drills.put(14, chapter14Drills);
+        // chapter 15
+        sectionADrills.put(15, populateSection('A', 'P'));
+        sectionBDrills.put(15, populateSection('B', 'O'));
+
+        // chapter 16
+        sectionADrills.put(16, populateSection('A', 'M'));
+        sectionBDrills.put(16, populateSection('B', 'N'));
+
+        // chapter 17
+        sectionADrills.put(17, populateSection('A', 'Q'));
+        sectionBDrills.put(17, populateSection('B', 'R'));
+
+        // chapter 18
+        sectionADrills.put(18, populateSection('A', 'M'));
+        sectionBDrills.put(18, populateSection('B', 'Q'));
+
+        // chapter 19
+        sectionADrills.put(19, populateSection('A', 'O'));
+        sectionBDrills.put(19, populateSection('B', 'N'));
+
+        // chapter 20
+        sectionADrills.put(20, populateSection('A', 'W'));
+        sectionBDrills.put(20, populateSection('B', 'N'));
+
+        // chapter 21
+        sectionADrills.put(21, populateSection('A', 'L'));
+        sectionBDrills.put(21, populateSection('B', 'N'));
+
+        // chapter 22
+        sectionADrills.put(22, populateSection('A', 'Q'));
+        sectionBDrills.put(22, populateSection('B', 'Q'));
+
+        // chapter 23
+        sectionADrills.put(23, populateSection('A', 'R'));
+        sectionBDrills.put(23, populateSection('B', 'M'));
+
+        // chapter 24
+        sectionADrills.put(24, populateSection('A', 'O'));
+        sectionBDrills.put(24, populateSection('B', 'R'));
     }
 
-    public ArrayList<String> getChapter(int chapter) {
-        return (drills.get(chapter));
+    public ArrayList<String> getChapter(char section, int chapter) {
+        if (section == 'A') {
+            return (sectionADrills.get(chapter));
+        } else {
+            return(sectionBDrills.get(chapter));
+        }
     }
 
-
+    private ArrayList<String> populateSection(char section, char lastDrill) {
+        ArrayList<String> returnList = new ArrayList<String>();
+        for (char alphabet = 'A'; alphabet <= lastDrill; alphabet++) {
+            String sectionAndDrill = "Section " + section + " Drill " + alphabet;
+            returnList.add(sectionAndDrill);
+        }
+        return returnList;
+    }
 }

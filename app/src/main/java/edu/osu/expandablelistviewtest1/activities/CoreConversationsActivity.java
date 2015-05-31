@@ -104,8 +104,6 @@ public class CoreConversationsActivity extends Activity {
         @Override
         public View getView(int position, View childView, ViewGroup parent) {
             View v = childView;
-            // Audio files correspond w/ CC numbers and are not zero-indexed
-            // like position is
 
             if (v == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

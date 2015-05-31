@@ -40,6 +40,7 @@ public class DrillsActivity extends Activity {
     // http://streaming.osu.edu/audio/jpn09su03/07/7a1.mp3
     private int chapter;
     private static String TAG = "#### DrillsActivity.java";
+    private char section;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +56,24 @@ public class DrillsActivity extends Activity {
             // Set the heading text
             TextView drillsHeading = (TextView) findViewById(R.id.drillsHeading);
             drillsHeading.setText("JSL Chapter " + chapter + ": Drills");
-
             DrillsInterface drillsInterface = new DrillsInterface();
-            ArrayList<String> thisChapter =
-                    drillsInterface.getChapter(chapter);
-            ArrayAdapter<String> myArrayAdapter = new MyArrayAdapter(
-                    this, R.layout.list_children_drills, thisChapter);
-            ListView listView = (ListView) findViewById(R.id.drillsListParent);
-            listView.setAdapter(myArrayAdapter);
-        } else {
+
+            // Populate left (section A) list
+            //TODO: find a better solution than this hack
+            section = 'A';
+            ArrayList<String> thisChapterSectionA = drillsInterface.getChapter('A', chapter);
+            ArrayAdapter<String> sectionAAdapter = new MyArrayAdapter(this, R.layout.list_children_drills, thisChapterSectionA);
+            ListView sectionAListView = (ListView) findViewById(R.id.drillsListParentA);
+            sectionAListView.setAdapter(sectionAAdapter);
+
+            // Populate right (section B) list
+            //TODO: find a better solution than this hack
+            section = 'B';
+            ArrayList<String> thisChapterSectionB = drillsInterface.getChapter('B', chapter);
+            ArrayAdapter<String> sectionBAdapter = new MyArrayAdapter(this, R.layout.list_children_drills, thisChapterSectionB);
+            ListView sectionBListView = (ListView) findViewById(R.id.drillsListParentB);
+            sectionBListView.setAdapter(sectionBAdapter);
+         } else {
             Toast.makeText(this, getString(R.string.no_wifi), Toast.LENGTH_LONG).show();
         }
     }
@@ -112,12 +122,13 @@ public class DrillsActivity extends Activity {
                         String audioSource = "http://www.cbusdesigns.com/jsl-app/";
                         audioSource += "chapter" + chapter;
                         audioSource += "/drills/audio/";
-                        // TODO: Need to change the whole capital "A" in the title thing
-                        audioSource += chapter + "A_" + adjustedPosition + ".mp3";
+
+                        //TODO: Find something better than this hack
+                        audioSource += chapter + section + "_" + adjustedPosition + ".mp3";
                         Log.d(TAG, "Audio URL: " + audioSource);
                         intent.putExtra("audioURL", audioSource);
 
-                        // A little bit of spaghetti code to tide the appetite
+                        // A little bit of spaghetti code
                         int actualPosition = adjustedPosition - 1;
                         intent.putExtra("trackTitle", drills.get(actualPosition));
 
