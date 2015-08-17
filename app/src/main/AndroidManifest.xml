@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.osu.expandablelistviewtest1" >
+    package="edu.osu.jsl_book_two" >
+
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="18" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,10 +12,10 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="JSL Book 2"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="edu.osu.jsl_book_two.MainActivity"
             android:label="JSL Book 2 (ver. 0.1)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,19 +24,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.CoreConversationsActivity"
+            android:name="edu.osu.jsl_book_two.activities.CoreConversationsActivity"
             android:label="JSL Book 2: Core Conversations (ver. 0.1)" >
         </activity>
         <activity
-            android:name=".activities.DrillsActivity"
+            android:name="edu.osu.jsl_book_two.activities.DrillsActivity"
             android:label="JSL Book 2: Drills (ver. 0.1)" >
         </activity>
         <activity
-            android:name=".activities.StreamAudioActivity"
+            android:name="edu.osu.jsl_book_two.activities.StreamAudioActivity"
             android:label="JSL Book 2: Streaming Audio (ver. 0.1)" >
         </activity>
         <activity
-            android:name=".activities.StreamVideoActivity"
+            android:name="edu.osu.jsl_book_two.activities.StreamVideoActivity"
             android:label="JSL Book 2: Streaming Video (ver. 0.1)" >
         </activity>
     </application>

@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ExpandableListViewTest1.iml" filepath="$PROJECT_DIR$/ExpandableListViewTest1.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jsl_book_two.iml" filepath="$PROJECT_DIR$/jsl_book_two.iml" />
     </modules>
   </component>
 </project>
-
